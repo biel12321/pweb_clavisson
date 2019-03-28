@@ -11,6 +11,10 @@ public class EstadoDTO implements Serializable{
 	private Integer id;
 	private String nome;
 	
+	public EstadoDTO() {
+		
+	}
+	
 	public EstadoDTO(Estado c) {
 		id = c.getId();
 		nome = c.getNome();

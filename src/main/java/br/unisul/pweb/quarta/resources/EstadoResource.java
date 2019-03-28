@@ -3,6 +3,7 @@ package br.unisul.pweb.quarta.resources;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.unisul.pweb.quarta.domain.Categoria;
+import br.unisul.pweb.quarta.domain.Cidade;
 import br.unisul.pweb.quarta.domain.Estado;
-import br.unisul.pweb.quarta.dtos.CategoriaDTO;
+import br.unisul.pweb.quarta.dtos.CidadeDTO;
 import br.unisul.pweb.quarta.dtos.EstadoDTO;
-import br.unisul.pweb.quarta.services.CategoriaService;
+import br.unisul.pweb.quarta.services.CidadeService;
 import br.unisul.pweb.quarta.services.EstadoService;
 
 @RestController
@@ -26,6 +27,9 @@ public class EstadoResource {
 	
 	@Autowired
 	private EstadoService service;
+	
+	@Autowired
+	private CidadeService cidadeService;
 	
 	//BUSCAR POR ID
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
@@ -70,6 +74,14 @@ public class EstadoResource {
 			listaDTO.add(new EstadoDTO(e));
 		}
 		return ResponseEntity.ok().body(listaDTO);
+	}
+	
+	//LISTAR CIDADES DE UM ESTADO
+	@RequestMapping(value="/{estadoId}/cidades", method=RequestMethod.GET)
+	public ResponseEntity<List<CidadeDTO>> findCidades(@PathVariable Integer estadoId) {
+		List<Cidade> list = cidadeService.findByEstado(estadoId);
+		List<CidadeDTO> listDto = list.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
 	}
 
 }
