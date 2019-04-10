@@ -67,4 +67,9 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	@RequestMapping(value="/email/{email}", method=RequestMethod.GET)
+	public ResponseEntity<Cliente> find(@PathVariable String email) {
+		Cliente obj = service.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
 }
