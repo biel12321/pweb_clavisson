@@ -15,6 +15,11 @@ public class CategoriaService {
 	@Autowired //Injetor de variavel para quando for usado.
 	private CategoriaRepository rep;
 	
+	//BUSCA POR NOME
+	public List<Categoria> buscaPorNome(String nome){
+		return rep.findDistinctByNomeContainingOrderByNome(nome);
+	}
+	
 	//BUSCAR POR ID
 	public Categoria find (Integer id) {
 		Optional<Categoria> obj = rep.findById(id);
