@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.unisul.pweb.quarta.domain.Categoria;
 import br.unisul.pweb.quarta.domain.Cidade;
 import br.unisul.pweb.quarta.domain.Estado;
+import br.unisul.pweb.quarta.dtos.CategoriaDTO;
 import br.unisul.pweb.quarta.dtos.CidadeDTO;
 import br.unisul.pweb.quarta.dtos.EstadoDTO;
+import br.unisul.pweb.quarta.resources.utils.URL;
 import br.unisul.pweb.quarta.services.CidadeService;
 import br.unisul.pweb.quarta.services.EstadoService;
 
@@ -83,5 +87,16 @@ public class EstadoResource {
 		List<CidadeDTO> listDto = list.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());  
 		return ResponseEntity.ok().body(listDto);
 	}
+	
+	//FILTRAR POR NOME
+		@RequestMapping(value="/filtro",method=RequestMethod.GET)
+		public ResponseEntity<List<EstadoDTO>> filtrarPorNome(
+				@RequestParam(value = "nome", defaultValue = "") String nome
+			) {
+			String nomeDecoded = URL.decodeParam(nome);
+			List<Estado> lista = service.buscaPorNome(nomeDecoded);
+			List<EstadoDTO> listaDTO = lista.stream().map(obj -> new EstadoDTO(obj)).collect(Collectors.toList()); 
+			return ResponseEntity.ok().body(listaDTO);
+		}
 
 }

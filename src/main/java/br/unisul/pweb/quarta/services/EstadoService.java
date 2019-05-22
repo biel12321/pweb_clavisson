@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.unisul.pweb.quarta.domain.Categoria;
 import br.unisul.pweb.quarta.domain.Estado;
 import br.unisul.pweb.quarta.repositories.EstadoRepository;
 
@@ -13,6 +15,11 @@ public class EstadoService {
 	
 	@Autowired //Injetor de variavel para quando for usado.
 	private EstadoRepository rep;
+	
+	//BUSCA POR NOME
+	public List<Estado> buscaPorNome(String nome){
+		return rep.findDistinctByNomeContainingOrderByNome(nome);
+	}
 	
 	//BUSCAR POR ID
 	public Estado find (Integer id) {
